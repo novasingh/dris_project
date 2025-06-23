@@ -6,6 +6,10 @@
 ## Overview
 DRIS is a Django-based web application commissioned by NADMA to improve disaster response coordination in Malaysia. It supports three user roles: Citizens, Volunteers, and Authorities, each with tailored features for reporting, aid, volunteering, and management.
 
+## Homepage
+
+![Homepage Screenshot](homepage.png)
+
 ## Features
 - **Role-based Authentication:** Citizens, Volunteers, Authorities
 - **Disaster Reporting:** Citizens report disasters (type, GPS, severity, timestamp)
@@ -56,6 +60,9 @@ DRIS is a Django-based web application commissioned by NADMA to improve disaster
 - `DRIS_Project/settings.py` – Project settings
 
 ## Navigation Diagram (Text)
+
+![Navigation Flow Simple](navigation-flow.svg)
+
 ```
 Citizen:
   Home → Disaster Reports (view/filter)
@@ -80,13 +87,11 @@ Authority:
   Home → View Shelter Directory
 ```
 
-## Navigation Flow
+## Navigation Flow Detail
 
 ![Navigation Flow](navigation-flow.png)
 
-## Homepage
 
-![Homepage Screenshot](docs/homepage.png)
 
 ---
 
