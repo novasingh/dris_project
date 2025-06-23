@@ -80,6 +80,14 @@ Authority:
   Home → View Shelter Directory
 ```
 
+## Navigation Flow
+
+![Navigation Flow](navigation-flow.png)
+
+## Homepage
+
+![Homepage Screenshot](docs/homepage.png)
+
 ---
 
 For any questions or further customization, contact: AKASHDEEP SINGH (24072095)
