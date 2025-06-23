@@ -55,10 +55,6 @@ DRIS is a Django-based web application commissioned by NADMA to improve disaster
 - `core/urls.py` – App URL routing
 - `DRIS_Project/settings.py` – Project settings
 
-## Customization
-- Update NADMA logo in `/static/nadma_logo.png`
-- Update footer with your name and student ID if needed
-
 ## Navigation Diagram (Text)
 ```
 Citizen:
