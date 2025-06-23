@@ -3,11 +3,61 @@
 {% extends 'core/base.html' %}
 {% block title %}Citizen Dashboard | DRIS{% endblock %}
 {% block content %}
-<h2>Welcome, {{ user.get_full_name|default:user.username }} (Citizen)</h2>
-<ul class="list-group mb-4">
-    <li class="list-group-item"><a href="{% url 'disaster_report_list' %}">View Disaster Reports</a></li>
-    <li class="list-group-item"><a href="{% url 'aid_request_create' %}">Submit Aid Request</a></li>
-    <li class="list-group-item"><a href="{% url 'shelter_directory' %}">Shelter Directory</a></li>
-    <li class="list-group-item"><a href="/accounts/profile/">Manage Profile</a></li>
-</ul>
+<h2 class="mb-4">Welcome, {{ user.get_full_name|default:user.username }} (Citizen)</h2>
+<div class="row g-4 mb-4">
+    <div class="col-md-6 col-lg-3">
+        <div class="card shadow-sm h-100">
+            <div class="card-body d-flex flex-column justify-content-between">
+                <h5 class="card-title">Report Disaster</h5>
+                <p class="card-text">Report a new disaster incident in your area.</p>
+                <a href="{% url 'disaster_report_create' %}" class="btn btn-outline-warning mt-auto">Report Disaster</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 col-lg-3">
+        <div class="card shadow-sm h-100">
+            <div class="card-body d-flex flex-column justify-content-between">
+                <h5 class="card-title">Submit Aid Request</h5>
+                <p class="card-text">Request emergency aid for yourself or others in need.</p>
+                <a href="{% url 'aid_request_create' %}" class="btn btn-outline-success mt-auto">Submit Request</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 col-lg-3">
+        <div class="card shadow-sm h-100">
+            <div class="card-body d-flex flex-column justify-content-between">
+                <h5 class="card-title">My Aid Requests</h5>
+                <p class="card-text">View the aid requests you have submitted.</p>
+                <a href="{% url 'my_aid_requests' %}" class="btn btn-outline-info mt-auto">My Requests</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 col-lg-3">
+        <div class="card shadow-sm h-100">
+            <div class="card-body d-flex flex-column justify-content-between">
+                <h5 class="card-title">Shelter Directory</h5>
+                <p class="card-text">Find available emergency shelters near your location.</p>
+                <a href="{% url 'shelter_directory' %}" class="btn btn-outline-primary mt-auto">View Shelters</a>
+            </div>
+        </div>
+    </div>
+        <div class="col-md-6 col-lg-3">
+        <div class="card shadow-sm h-100">
+            <div class="card-body d-flex flex-column justify-content-between">
+                <h5 class="card-title">Volunteer</h5>
+                <p class="card-text">Add the new volunteer</p>
+                <a href="{% url 'volunteer_registration' %}" class="btn btn-outline-primary mt-auto">Volunteer Registration</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 col-lg-3">
+        <div class="card shadow-sm h-100">
+            <div class="card-body d-flex flex-column justify-content-between">
+                <h5 class="card-title">Manage Profile</h5>
+                <p class="card-text">Update your personal information and account settings.</p>
+                <a href="/accounts/profile/" class="btn btn-outline-secondary mt-auto">Profile</a>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

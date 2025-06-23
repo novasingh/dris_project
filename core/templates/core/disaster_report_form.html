@@ -1,0 +1,10 @@
+{% extends 'core/base.html' %}
+{% block title %}Report Disaster | DRIS{% endblock %}
+{% block content %}
+<h2 class="mb-4">Report a Disaster</h2>
+<form method="post" class="card p-4 shadow-sm mb-4">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-warning">Submit Report</button>
+</form>
+{% endblock %}

@@ -15,6 +15,10 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required, user_passes_test
 from .forms import ShelterForm, ShelterFilterForm
 from django.db.models import Q
+from django.contrib.auth.decorators import login_required
+from .models import User
+from django.core.paginator import Paginator
+from .forms_disaster import DisasterReportForm
 
 def home(request):
     if request.method == 'POST':
@@ -40,14 +44,32 @@ def disaster_report_list(request):
         if form.cleaned_data['date']:
             date = form.cleaned_data['date']
             reports = reports.filter(timestamp__date=date)
+    paginator = Paginator(reports.order_by('-timestamp'), 10)
+    page_number = request.GET.get('page')
+    reports_page = paginator.get_page(page_number)
     context = {
-        'reports': reports.order_by('-timestamp'),
+        'reports': reports_page,
         'form': form,
     }
     return render(request, 'core/disaster_report_list.html', context)
 
 @login_required
-@role_required(['citizen'])
+@role_required(['citizen', 'authority'])
+def disaster_report_create(request):
+    if request.method == 'POST':
+        form = DisasterReportForm(request.POST)
+        if form.is_valid():
+            report = form.save(commit=False)
+            report.user = request.user
+            report.timestamp = timezone.now()
+            report.save()
+            return redirect('dashboard_router')
+    else:
+        form = DisasterReportForm()
+    return render(request, 'core/disaster_report_form.html', {'form': form})
+
+@login_required
+@role_required(['citizen', 'authority'])
 def aid_request_create(request):
     if request.method == 'POST':
         form = AidRequestForm(request.POST)
@@ -56,7 +78,7 @@ def aid_request_create(request):
             aid_request.user = request.user
             aid_request.timestamp = timezone.now()
             aid_request.save()
-            return redirect('disaster_report_list')
+            return redirect('dashboard_router')
     else:
         form = AidRequestForm()
     form.fields['disaster_report'].queryset = DisasterReport.objects.filter(user=request.user)
@@ -67,7 +89,7 @@ def aid_request_create(request):
     return render(request, 'core/aid_request_form.html', context)
 
 @login_required
-@role_required(['volunteer'])
+@role_required(['volunteer', 'citizen'])
 def volunteer_registration(request):
     if request.method == 'POST':
         form = VolunteerRegistrationForm(request.POST)
@@ -75,7 +97,7 @@ def volunteer_registration(request):
             request.user.skills = form.cleaned_data['skills']
             request.user.availability = form.cleaned_data['availability']
             request.user.save()
-            return redirect('disaster_report_list')
+            return redirect('dashboard_router')
     else:
         form = VolunteerRegistrationForm()
     return render(request, 'core/volunteer_registration.html', {'form': form})
@@ -122,12 +144,18 @@ def shelter_directory(request):
 @login_required
 @role_required(['authority'])
 def admin_dashboard(request):
-    from .models import User, DisasterReport, Shelter, VolunteerAssignment
+    from .models import User, DisasterReport, AidRequest, Shelter, VolunteerAssignment
+    user_count = User.objects.count()
+    report_count = DisasterReport.objects.count()
+    request_count = AidRequest.objects.count()
+    assignment_count = VolunteerAssignment.objects.count()
+    active_shelter_count = Shelter.objects.filter(available_capacity__gt=0).count()
     context = {
-        'user_count': User.objects.count(),
-        'report_count': DisasterReport.objects.count(),
-        'shelter_count': Shelter.objects.count(),
-        'assignment_count': VolunteerAssignment.objects.count(),
+        'user_count': user_count,
+        'report_count': report_count,
+        'request_count': request_count,
+        'assignment_count': assignment_count,
+        'active_shelter_count': active_shelter_count,
     }
     return render(request, 'core/admin_dashboard.html', context)
 
@@ -169,7 +197,15 @@ def disaster_report_list_json(request):
 def volunteer_list(request):
     from .models import User
     volunteers = User.objects.filter(role='volunteer').order_by('full_name')
-    return render(request, 'core/volunteer_list.html', {'volunteers': volunteers})
+    q = request.GET.get('q', '')
+    if q:
+        volunteers = volunteers.filter(
+            Q(full_name__icontains=q) | Q(email__icontains=q) | Q(skills__icontains=q)
+        )
+    paginator = Paginator(volunteers, 10)
+    page_number = request.GET.get('page')
+    volunteers_page = paginator.get_page(page_number)
+    return render(request, 'core/volunteer_list.html', {'volunteers': volunteers_page})
 
 @login_required
 @role_required(['authority'])
@@ -213,9 +249,10 @@ def register(request):
 def dashboard_router(request):
     if not request.user.is_authenticated:
         return redirect('login')
-    if request.user.is_superuser or (hasattr(request.user, 'role') and request.user.role == 'authority'):
-        from django.urls import reverse
-        return redirect(reverse('admin_dashboard'))
+    if request.user.is_superuser:
+        return render(request, 'core/dashboard_superuser.html')
+    if hasattr(request.user, 'role') and request.user.role == 'authority':
+        return render(request, 'core/dashboard_authority.html')
     elif hasattr(request.user, 'role'):
         if request.user.role == 'citizen':
             return render(request, 'core/dashboard_citizen.html')
@@ -261,3 +298,46 @@ def add_shelter(request):
     else:
         form = ShelterForm()
     return render(request, 'core/add_shelter.html', {'form': form})
+
+@login_required
+@role_required(['authority', 'superuser'])
+def user_list(request):
+    users = User.objects.all().order_by('full_name')
+    q = request.GET.get('q', '')
+    role = request.GET.get('role', '')
+    if q:
+        users = users.filter(
+            Q(full_name__icontains=q) | Q(username__icontains=q) | Q(email__icontains=q)
+        )
+    if role:
+        users = users.filter(role=role)
+    paginator = Paginator(users, 10)
+    page_number = request.GET.get('page')
+    users_page = paginator.get_page(page_number)
+    return render(request, 'core/user_list.html', {'users': users_page})
+
+@login_required
+@role_required(['authority', 'superuser'])
+def aid_request_list(request):
+    aid_requests = AidRequest.objects.all().select_related('user', 'disaster_report').order_by('-timestamp')
+    q = request.GET.get('q', '')
+    status = request.GET.get('status', '')
+    if q:
+        aid_requests = aid_requests.filter(
+            Q(user__full_name__icontains=q) | Q(details__icontains=q) | Q(status__icontains=q)
+        )
+    if status:
+        aid_requests = aid_requests.filter(status=status)
+    paginator = Paginator(aid_requests, 10)
+    page_number = request.GET.get('page')
+    aid_requests_page = paginator.get_page(page_number)
+    return render(request, 'core/aid_request_list.html', {'aid_requests': aid_requests_page})
+
+@login_required
+@role_required(['citizen'])
+def my_aid_requests(request):
+    aid_requests = AidRequest.objects.filter(user=request.user).order_by('-timestamp')
+    paginator = Paginator(aid_requests, 10)
+    page_number = request.GET.get('page')
+    aid_requests_page = paginator.get_page(page_number)
+    return render(request, 'core/my_aid_requests.html', {'aid_requests': aid_requests_page})

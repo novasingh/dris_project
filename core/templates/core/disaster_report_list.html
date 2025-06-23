@@ -11,47 +11,68 @@
     <div class="col-md-3">
         <select name="disaster_type" class="form-select">
             <option value="">All Types</option>
-            <option value="flood">Flood</option>
-            <option value="landslide">Landslide</option>
-            <option value="haze">Haze</option>
+            <option value="flood" {% if request.GET.disaster_type == 'flood' %}selected{% endif %}>Flood</option>
+            <option value="landslide" {% if request.GET.disaster_type == 'landslide' %}selected{% endif %}>Landslide</option>
+            <option value="haze" {% if request.GET.disaster_type == 'haze' %}selected{% endif %}>Haze</option>
         </select>
     </div>
     <div class="col-md-3">
-        <input type="text" name="severity" class="form-control" placeholder="Severity">
+        <input type="text" name="severity" class="form-control" placeholder="Severity" value="{{ request.GET.severity }}">
     </div>
     <div class="col-md-3">
-        <input type="date" name="date" class="form-control" placeholder="Date">
+        <input type="date" name="date" class="form-control" placeholder="Date" value="{{ request.GET.date }}">
     </div>
-    <div class="col-md-3">
+    <div class="col-md-2">
         <button type="submit" class="btn btn-primary w-100">Filter</button>
     </div>
 </form>
 <table class="table table-bordered table-hover">
     <thead class="table-light">
         <tr>
+            <th>User</th>
             <th>Type</th>
             <th>Severity</th>
-            <th>Location (Lat, Long)</th>
-            <th>Reported By</th>
-            <th>Date/Time</th>
+            <th>Location</th>
             <th>Description</th>
+            <th>Timestamp</th>
         </tr>
     </thead>
     <tbody>
         {% for report in reports %}
         <tr>
+            <td>{{ report.user.full_name }}</td>
             <td>{{ report.get_disaster_type_display }}</td>
             <td>{{ report.severity }}</td>
             <td>{{ report.gps_lat }}, {{ report.gps_long }}</td>
-            <td>{{ report.user.full_name }}</td>
-            <td>{{ report.timestamp }}</td>
             <td>{{ report.description }}</td>
+            <td>{{ report.timestamp|date:'Y-m-d H:i' }}</td>
         </tr>
         {% empty %}
-        <tr><td colspan="6" class="text-center">No reports found.</td></tr>
+        <tr><td colspan="6" class="text-center">No disaster reports found.</td></tr>
         {% endfor %}
     </tbody>
 </table>
+<nav aria-label="Disaster report pagination">
+    <ul class="pagination justify-content-center">
+        {% if reports.has_previous %}
+            <li class="page-item"><a class="page-link" href="?{% if request.GET.disaster_type %}disaster_type={{ request.GET.disaster_type }}&{% endif %}{% if request.GET.severity %}severity={{ request.GET.severity }}&{% endif %}{% if request.GET.date %}date={{ request.GET.date }}&{% endif %}page={{ reports.previous_page_number }}">Previous</a></li>
+        {% else %}
+            <li class="page-item disabled"><span class="page-link">Previous</span></li>
+        {% endif %}
+        {% for num in reports.paginator.page_range %}
+            {% if reports.number == num %}
+                <li class="page-item active"><span class="page-link">{{ num }}</span></li>
+            {% else %}
+                <li class="page-item"><a class="page-link" href="?{% if request.GET.disaster_type %}disaster_type={{ request.GET.disaster_type }}&{% endif %}{% if request.GET.severity %}severity={{ request.GET.severity }}&{% endif %}{% if request.GET.date %}date={{ request.GET.date }}&{% endif %}page={{ num }}">{{ num }}</a></li>
+            {% endif %}
+        {% endfor %}
+        {% if reports.has_next %}
+            <li class="page-item"><a class="page-link" href="?{% if request.GET.disaster_type %}disaster_type={{ request.GET.disaster_type }}&{% endif %}{% if request.GET.severity %}severity={{ request.GET.severity }}&{% endif %}{% if request.GET.date %}date={{ request.GET.date }}&{% endif %}page={{ reports.next_page_number }}">Next</a></li>
+        {% else %}
+            <li class="page-item disabled"><span class="page-link">Next</span></li>
+        {% endif %}
+    </ul>
+</nav>
 {% endblock %}
 {% block extra_js %}
 <script>
@@ -67,12 +88,12 @@ function updateReportTable() {
                 data.reports.forEach(report => {
                     tbody.innerHTML += `
                         <tr>
+                            <td>${report.user}</td>
                             <td>${report.type}</td>
                             <td>${report.severity}</td>
                             <td>${report.gps_lat}, ${report.gps_long}</td>
-                            <td>${report.user}</td>
-                            <td>${report.timestamp}</td>
                             <td>${report.description}</td>
+                            <td>${new Date(report.timestamp).toLocaleString()}</td>
                         </tr>
                     `;
                 });

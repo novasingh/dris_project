@@ -70,7 +70,8 @@
             <div class="card-body">
                 <h5 class="card-title">Manage Users</h5>
                 <p class="card-text">View, add, or edit users and their roles.</p>
-                <a href="/admin/core/user/" class="btn btn-primary w-100">Manage Users</a>
+                <a href="/admin/core/user/" class="btn btn-primary w-100 mb-2">Manage Users</a>
+                <a href="{% url 'user_list' %}" class="btn btn-outline-primary w-100">View Users</a>
             </div>
         </div>
     </div>
@@ -79,7 +80,8 @@
             <div class="card-body">
                 <h5 class="card-title">Manage Volunteers</h5>
                 <p class="card-text">View and manage all registered volunteers.</p>
-                <a href="/volunteers/" class="btn btn-success w-100">View Volunteers</a>
+                <a href="/volunteers/" class="btn btn-success w-100 mb-2">View Volunteers</a>
+                <a href="{% url 'volunteer_list' %}" class="btn btn-outline-success w-100">Volunteer Directory</a>
             </div>
         </div>
     </div>
@@ -88,7 +90,8 @@
             <div class="card-body">
                 <h5 class="card-title">Manage Shelters</h5>
                 <p class="card-text">Add, edit, or remove emergency shelters.</p>
-                <a href="/shelters/" class="btn btn-warning w-100">Manage Shelters</a>
+                <a href="/shelters/" class="btn btn-warning w-100 mb-2">Manage Shelters</a>
+                <a href="{% url 'shelter_directory' %}" class="btn btn-outline-warning w-100">View Shelters</a>
             </div>
         </div>
     </div>
@@ -97,7 +100,8 @@
             <div class="card-body">
                 <h5 class="card-title">Aid Requests</h5>
                 <p class="card-text">Review and respond to aid requests from citizens.</p>
-                <a href="/admin/core/aidrequest/" class="btn btn-info w-100">Manage Aid Requests</a>
+                <a href="/admin/core/aidrequest/" class="btn btn-info w-100 mb-2">Manage Aid Requests</a>
+                <a href="{% url 'aid_request_list' %}" class="btn btn-outline-info w-100">View Aid Requests</a>
             </div>
         </div>
     </div>
@@ -106,7 +110,8 @@
             <div class="card-body">
                 <h5 class="card-title">Disaster Reports</h5>
                 <p class="card-text">View and manage all disaster reports.</p>
-                <a href="/admin/core/disasterreport/" class="btn btn-danger w-100">Manage Reports</a>
+                <a href="/admin/core/disasterreport/" class="btn btn-danger w-100 mb-2">Manage Reports</a>
+                <a href="{% url 'disaster_report_list' %}" class="btn btn-outline-danger w-100">View Reports</a>
             </div>
         </div>
     </div>
@@ -115,7 +120,8 @@
             <div class="card-body">
                 <h5 class="card-title">Assignments</h5>
                 <p class="card-text">Assign volunteers to aid requests and track.</p>
-                <a href="/assign-volunteer/" class="btn btn-outline-secondary w-100 mt-2">Assign Volunteer</a>
+                 <a href="/admin/core/volunteerassignment" class="btn btn-secondary w-100 mb-2">Manage Volunteer</a>
+                <a href="/assign-volunteer/" class="btn btn-outline-secondary w-100 mb-2">Assign Volunteer</a>
             </div>
         </div>
     </div>

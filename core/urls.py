@@ -2,7 +2,7 @@
 # Student ID: 24072095
 from django.urls import path
 from . import views
-from .views import CustomLoginView, dashboard_router, profile, help_faq, add_shelter
+from .views import CustomLoginView, dashboard_router, profile, help_faq, add_shelter, disaster_report_create, my_aid_requests
 
 urlpatterns = [
     path('', views.home, name='home'),
@@ -21,4 +21,8 @@ urlpatterns = [
     path('accounts/profile/', profile, name='profile'),
     path('help/', help_faq, name='help_faq'),
     path('shelters/add/', add_shelter, name='add_shelter'),
+    path('users/', views.user_list, name='user_list'),
+    path('aid-requests/', views.aid_request_list, name='aid_request_list'),
+    path('disasters/report/', disaster_report_create, name='disaster_report_create'),
+    path('aid/my-requests/', my_aid_requests, name='my_aid_requests'),
 ]

@@ -1,0 +1,74 @@
+<!-- 
+    Aid Request List Template
+    Name: AKASHDEEP SINGH
+    Student ID: 24072095 -->
+
+{% extends 'core/base.html' %}
+{% block title %}Aid Requests | DRIS{% endblock %}
+{% block content %}
+<h2 class="mb-4">All Aid Requests</h2>
+<form method="get" class="row g-3 mb-4">
+    <div class="col-md-3">
+        <input type="text" name="q" class="form-control" placeholder="Search by user, type, or status" value="{{ request.GET.q }}">
+    </div>
+    <div class="col-md-2">
+        <select name="status" class="form-select">
+            <option value="">All Statuses</option>
+            <option value="Pending" {% if request.GET.status == 'Pending' %}selected{% endif %}>Pending</option>
+            <option value="Approved" {% if request.GET.status == 'Approved' %}selected{% endif %}>Approved</option>
+            <option value="Rejected" {% if request.GET.status == 'Rejected' %}selected{% endif %}>Rejected</option>
+            <option value="Assigned" {% if request.GET.status == 'Assigned' %}selected{% endif %}>Assigned</option>
+        </select>
+    </div>
+    <div class="col-md-2">
+        <button type="submit" class="btn btn-primary w-100">Filter</button>
+    </div>
+</form>
+<table class="table table-bordered table-hover">
+    <thead class="table-light">
+        <tr>
+            <th>User</th>
+            <th>Disaster</th>
+            <th>Type</th>
+            <th>Status</th>
+            <th>Details</th>
+            <th>Timestamp</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for req in aid_requests %}
+        <tr>
+            <td>{{ req.user.full_name }}</td>
+            <td>{{ req.disaster_report.get_disaster_type_display }}</td>
+            <td>{{ req.get_aid_type_display }}</td>
+            <td>{{ req.status }}</td>
+            <td>{{ req.details }}</td>
+            <td>{{ req.timestamp|date:'Y-m-d H:i' }}</td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="6" class="text-center">No aid requests found.</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+<nav aria-label="Aid request pagination">
+    <ul class="pagination justify-content-center">
+        {% if aid_requests.has_previous %}
+            <li class="page-item"><a class="page-link" href="?{% if request.GET.q %}q={{ request.GET.q }}&{% endif %}{% if request.GET.status %}status={{ request.GET.status }}&{% endif %}page={{ aid_requests.previous_page_number }}">Previous</a></li>
+        {% else %}
+            <li class="page-item disabled"><span class="page-link">Previous</span></li>
+        {% endif %}
+        {% for num in aid_requests.paginator.page_range %}
+            {% if aid_requests.number == num %}
+                <li class="page-item active"><span class="page-link">{{ num }}</span></li>
+            {% else %}
+                <li class="page-item"><a class="page-link" href="?{% if request.GET.q %}q={{ request.GET.q }}&{% endif %}{% if request.GET.status %}status={{ request.GET.status }}&{% endif %}page={{ num }}">{{ num }}</a></li>
+            {% endif %}
+        {% endfor %}
+        {% if aid_requests.has_next %}
+            <li class="page-item"><a class="page-link" href="?{% if request.GET.q %}q={{ request.GET.q }}&{% endif %}{% if request.GET.status %}status={{ request.GET.status }}&{% endif %}page={{ aid_requests.next_page_number }}">Next</a></li>
+        {% else %}
+            <li class="page-item disabled"><span class="page-link">Next</span></li>
+        {% endif %}
+    </ul>
+</nav>
+{% endblock %}

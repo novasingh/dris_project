@@ -1,0 +1,36 @@
+{% extends 'core/base.html' %}
+{% block title %}My Aid Requests | DRIS{% endblock %}
+{% block content %}
+<h2 class="mb-4">My Aid Requests</h2>
+{% if aid_requests %}
+    <div class="list-group mb-4">
+        {% for req in aid_requests %}
+        <div class="list-group-item flex-column align-items-start">
+            <div class="d-flex w-100 justify-content-between">
+                <h5 class="mb-1">{{ req.disaster_report }}</h5>
+                <small>{{ req.timestamp|date:"Y-m-d H:i" }}</small>
+            </div>
+            <p class="mb-1">{{ req.details }}</p>
+            <small>Status: <span class="badge bg-info text-dark">{{ req.status }}</span></small>
+        </div>
+        {% endfor %}
+    </div>
+    {% if aid_requests.has_other_pages %}
+    <nav>
+        <ul class="pagination">
+            {% if aid_requests.has_previous %}
+            <li class="page-item"><a class="page-link" href="?page={{ aid_requests.previous_page_number }}">Previous</a></li>
+            {% endif %}
+            {% for num in aid_requests.paginator.page_range %}
+            <li class="page-item {% if aid_requests.number == num %}active{% endif %}"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+            {% endfor %}
+            {% if aid_requests.has_next %}
+            <li class="page-item"><a class="page-link" href="?page={{ aid_requests.next_page_number }}">Next</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+    {% endif %}
+{% else %}
+    <div class="alert alert-info">You have not submitted any aid requests yet.</div>
+{% endif %}
+{% endblock %}

@@ -7,6 +7,14 @@
 {% block title %}Volunteers | DRIS{% endblock %}
 {% block content %}
 <h2 class="mb-4">Volunteers</h2>
+<form method="get" class="row g-3 mb-4">
+    <div class="col-md-4">
+        <input type="text" name="q" class="form-control" placeholder="Search by name, email, or skills" value="{{ request.GET.q }}">
+    </div>
+    <div class="col-md-2">
+        <button type="submit" class="btn btn-primary w-100">Filter</button>
+    </div>
+</form>
 <table class="table table-bordered table-hover">
     <thead class="table-light">
         <tr>
@@ -29,4 +37,25 @@
         {% endfor %}
     </tbody>
 </table>
+<nav aria-label="Volunteer pagination">
+    <ul class="pagination justify-content-center">
+        {% if volunteers.has_previous %}
+            <li class="page-item"><a class="page-link" href="?{% if request.GET.q %}q={{ request.GET.q }}&{% endif %}page={{ volunteers.previous_page_number }}">Previous</a></li>
+        {% else %}
+            <li class="page-item disabled"><span class="page-link">Previous</span></li>
+        {% endif %}
+        {% for num in volunteers.paginator.page_range %}
+            {% if volunteers.number == num %}
+                <li class="page-item active"><span class="page-link">{{ num }}</span></li>
+            {% else %}
+                <li class="page-item"><a class="page-link" href="?{% if request.GET.q %}q={{ request.GET.q }}&{% endif %}page={{ num }}">{{ num }}</a></li>
+            {% endif %}
+        {% endfor %}
+        {% if volunteers.has_next %}
+            <li class="page-item"><a class="page-link" href="?{% if request.GET.q %}q={{ request.GET.q }}&{% endif %}page={{ volunteers.next_page_number }}">Next</a></li>
+        {% else %}
+            <li class="page-item disabled"><span class="page-link">Next</span></li>
+        {% endif %}
+    </ul>
+</nav>
 {% endblock %}

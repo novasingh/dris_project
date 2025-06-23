@@ -4,10 +4,42 @@
 {% block title %}Volunteer Dashboard | DRIS{% endblock %}
 {% block content %}
 <h2>Welcome, {{ user.get_full_name|default:user.username }} (Volunteer)</h2>
-<ul class="list-group mb-4">
-    <li class="list-group-item"><a href="{% url 'volunteer_registration' %}">Update Skills & Availability</a></li>
-    <li class="list-group-item"><a href="{% url 'disaster_report_list' %}">View Disaster Reports</a></li>
-    <li class="list-group-item"><a href="{% url 'shelter_directory' %}">Shelter Directory</a></li>
-    <li class="list-group-item"><a href="/accounts/profile/">Manage Profile</a></li>
-</ul>
+<div class="row g-4 mb-4">
+    <div class="col-md-4">
+        <div class="card shadow-sm h-100">
+            <div class="card-body d-flex flex-column justify-content-between">
+                <h5 class="card-title">Update Skills & Availability</h5>
+                <p class="card-text">Update your skills and availability for volunteering.</p>
+                <a href="{% url 'volunteer_registration' %}" class="btn btn-outline-primary mt-auto">Update Info</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card shadow-sm h-100">
+            <div class="card-body d-flex flex-column justify-content-between">
+                <h5 class="card-title">Disaster Reports</h5>
+                <p class="card-text">View all disaster reports and stay informed.</p>
+                <a href="{% url 'disaster_report_list' %}" class="btn btn-outline-danger mt-auto">View Reports</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card shadow-sm h-100">
+            <div class="card-body d-flex flex-column justify-content-between">
+                <h5 class="card-title">Shelter Directory</h5>
+                <p class="card-text">Find and view available emergency shelters.</p>
+                <a href="{% url 'shelter_directory' %}" class="btn btn-outline-info mt-auto">View Shelters</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card shadow-sm h-100">
+            <div class="card-body d-flex flex-column justify-content-between">
+                <h5 class="card-title">Manage Profile</h5>
+                <p class="card-text">Update your personal information and account settings.</p>
+                <a href="/accounts/profile/" class="btn btn-outline-secondary mt-auto">Profile</a>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
