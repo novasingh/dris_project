@@ -1,0 +1,366 @@
+<!-- 
+    Home Page Template
+    Name: AKASHDEEP SINGH
+    Student ID: 24072095 -->
+{% extends 'core/base.html' %}
+{% load static %}
+{% block title %}Home | DRIS{% endblock %}
+{% block content %}
+
+
+<!-- Hero Section -->
+<section id="home" class="hero-section">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <h1 class="display-4 fw-bold mb-4">Disaster Response Information System</h1>
+                <p class="lead mb-4">
+                    DRIS connects citizens, volunteers, and authorities to provide coordinated disaster response 
+                    across Malaysia. Report incidents, request aid, and contribute to community safety.
+                </p>
+                <div class="d-flex gap-3">
+                    <a href="{% url 'disaster_report_list' %}" class="btn btn-emergency btn-lg">
+                        <i class="fas fa-exclamation-triangle me-2"></i>Report Emergency
+                    </a>
+                    <a href="{% url 'aid_request_create' %}" class="btn btn-light btn-lg">
+                        <i class="fas fa-hands-helping me-2"></i>Request Aid
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-6 text-center">
+                <img src="{% static '1.webp' %}" alt="Emergency Response" class="img-fluid rounded shadow">
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Services Section -->
+<section id="services" class="py-5">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold">Our Services</h2>
+            <p class="text-muted">Comprehensive disaster management solutions for all users</p>
+        </div>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card feature-card h-100">
+                    <div class="card-body text-center p-4">
+                        <div class="mb-3">
+                            <i class="fas fa-exclamation-triangle fa-3x text-danger"></i>
+                        </div>
+                        <h5 class="card-title">Disaster Reporting</h5>
+                        <p class="card-text">
+                            Report disasters with GPS coordinates, severity levels, and real-time updates 
+                            to help authorities respond quickly.
+                        </p>
+                        <a href="{% url 'disaster_report_list' %}" class="btn btn-outline-primary">View Reports</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card feature-card h-100">
+                    <div class="card-body text-center p-4">
+                        <div class="mb-3">
+                            <i class="fas fa-hands-helping fa-3x text-success"></i>
+                        </div>
+                        <h5 class="card-title">Aid Management</h5>
+                        <p class="card-text">
+                            Request emergency aid including food, shelter, medical assistance, 
+                            and rescue operations through our coordinated system.
+                        </p>
+                        <a href="{% url 'aid_request_create' %}" class="btn btn-outline-success">Request Aid</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card feature-card h-100">
+                    <div class="card-body text-center p-4">
+                        <div class="mb-3">
+                            <i class="fas fa-users fa-3x text-info"></i>
+                        </div>
+                        <h5 class="card-title">Volunteer Coordination</h5>
+                        <p class="card-text">
+                            Register as a volunteer, showcase your skills, and get assigned 
+                            to disaster response tasks in your area.
+                        </p>
+                        <a href="{% url 'volunteer_registration' %}" class="btn btn-outline-info">Join as Volunteer</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Stats Section -->
+<section class="stats-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3">
+                <div class="stat-item">
+                    <div class="stat-number">24/7</div>
+                    <p class="mb-0">Emergency Response</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stat-item">
+                    <div class="stat-number">1,247</div>
+                    <p class="mb-0">Registered Volunteers</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stat-item">
+                    <div class="stat-number">156</div>
+                    <p class="mb-0">Active Shelters</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stat-item">
+                    <div class="stat-number">3,892</div>
+                    <p class="mb-0">Incidents Resolved</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Shelter Directory Preview -->
+<section class="py-5">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <h2 class="fw-bold mb-4">Emergency Shelters</h2>
+                <p class="mb-4">
+                    Access real-time information about emergency shelters across Malaysia, 
+                    including availability, capacity, and location details.
+                </p>
+                <a href="{% url 'shelter_directory' %}" class="btn btn-primary btn-lg">
+                    <i class="fas fa-home me-2"></i>View Shelter Directory
+                </a>
+            </div>
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h6 class="card-title">Available Shelters</h6>
+                        <div class="list-group list-group-flush">
+                            <div class="list-group-item d-flex justify-content-between">
+                                <span>Kuala Lumpur Community Center</span>
+                                <span class="badge bg-success">Available</span>
+                            </div>
+                            <div class="list-group-item d-flex justify-content-between">
+                                <span>Petaling Jaya Emergency Shelter</span>
+                                <span class="badge bg-warning">Limited</span>
+                            </div>
+                            <div class="list-group-item d-flex justify-content-between">
+                                <span>Selangor State Facility</span>
+                                <span class="badge bg-success">Available</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- About Section -->
+<section id="about" class="py-5">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <h2 class="fw-bold mb-4">About DRIS</h2>
+                <p class="mb-4">
+                    DRIS (Disaster Response Information System) is Malaysia's national platform for disaster management, connecting citizens, volunteers, and authorities for coordinated response and community safety. The system enables real-time disaster reporting, aid requests, volunteer coordination, and shelter management.
+                </p>
+            </div>
+            <div class="col-lg-6 text-center">
+                <img src="{% static '2.png' %}" alt="About DRIS" class="img-fluid rounded shadow">
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Contact Section -->
+<section id="contact" class="py-5 bg-light">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <h2 class="fw-bold mb-4">Contact Us</h2>
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-success">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+                <form method="post" novalidate>
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="id_name" class="form-label">Name</label>
+                        {{ form.name }}
+                        {% if form.name.errors %}
+                            <div class="invalid-feedback d-block">{{ form.name.errors.0 }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="mb-3">
+                        <label for="id_email" class="form-label">Email</label>
+                        {{ form.email }}
+                        {% if form.email.errors %}
+                            <div class="invalid-feedback d-block">{{ form.email.errors.0 }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="mb-3">
+                        <label for="id_subject" class="form-label">Subject</label>
+                        {{ form.subject }}
+                        {% if form.subject.errors %}
+                            <div class="invalid-feedback d-block">{{ form.subject.errors.0 }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="mb-3">
+                        <label for="id_message" class="form-label">Message</label>
+                        {{ form.message }}
+                        {% if form.message.errors %}
+                            <div class="invalid-feedback d-block">{{ form.message.errors.0 }}</div>
+                        {% endif %}
+                    </div>
+                    <button type="submit" class="btn btn-primary">Send Message</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Help & FAQ Section -->
+<section id="help-faq" class="py-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <h2 class="fw-bold mb-4">Help & FAQ</h2>
+                <div class="text-center mb-4">
+                    <a href="{% url 'help_faq' %}" class="btn btn-outline-primary btn-lg">View All Help & FAQ</a>
+                </div>
+                <div class="accordion" id="faqAccordionHome">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="faqHome1">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseHome1" aria-expanded="true" aria-controls="collapseHome1">
+                                How do I report a disaster?
+                            </button>
+                        </h2>
+                        <div id="collapseHome1" class="accordion-collapse collapse show" aria-labelledby="faqHome1" data-bs-parent="#faqAccordionHome">
+                            <div class="accordion-body">
+                                Login or register as a citizen, then click "Report Emergency" or "Disaster Reports" to submit a new disaster report with details and location.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="faqHome2">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseHome2" aria-expanded="false" aria-controls="collapseHome2">
+                                How can I request aid?
+                            </button>
+                        </h2>
+                        <div id="collapseHome2" class="accordion-collapse collapse" aria-labelledby="faqHome2" data-bs-parent="#faqAccordionHome">
+                            <div class="accordion-body">
+                                Go to "Request Aid" from the home page or dashboard, fill in the required details, and submit your request. Authorities will review and respond.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="faqHome3">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseHome3" aria-expanded="false" aria-controls="collapseHome3">
+                                How do I become a volunteer?
+                            </button>
+                        </h2>
+                        <div id="collapseHome3" class="accordion-collapse collapse" aria-labelledby="faqHome3" data-bs-parent="#faqAccordionHome">
+                            <div class="accordion-body">
+                                Register as a volunteer, then update your skills and availability. You will be contacted or assigned to tasks as needed by authorities.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+<style>
+    .hero-section {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 80px 0;
+    }
+    .emergency-bar {
+        background-color: #dc3545;
+        color: white;
+        padding: 10px 0;
+        font-weight: bold;
+    }
+    .feature-card {
+        transition: transform 0.3s ease;
+        border: none;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+    .feature-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 15px rgba(0,0,0,0.15);
+    }
+    .stats-section {
+        background-color: #f8f9fa;
+        padding: 60px 0;
+    }
+    .stat-item {
+        text-align: center;
+        padding: 20px;
+    }
+    .stat-number {
+        font-size: 2.5rem;
+        font-weight: bold;
+        color: #667eea;
+    }
+    .btn-emergency {
+        background-color: #dc3545;
+        border-color: #dc3545;
+        color: white;
+        font-weight: bold;
+    }
+    .btn-emergency:hover {
+        background-color: #c82333;
+        border-color: #bd2130;
+        color: white;
+    }
+</style>
+<script>
+    // Update stats with animation (simulate real-time data)
+    function animateStats() {
+        const statNumbers = document.querySelectorAll('.stat-number');
+        statNumbers.forEach(stat => {
+            if (!stat.textContent.includes('/')) {
+                const finalNumber = parseInt(stat.textContent.replace(/,/g, ''));
+                let currentNumber = 0;
+                const increment = finalNumber / 50;
+                const timer = setInterval(() => {
+                    currentNumber += increment;
+                    if (currentNumber >= finalNumber) {
+                        stat.textContent = finalNumber.toLocaleString();
+                        clearInterval(timer);
+                    } else {
+                        stat.textContent = Math.floor(currentNumber).toLocaleString();
+                    }
+                }, 20);
+            }
+        });
+    }
+    // Trigger animation when stats section comes into view
+    document.addEventListener('DOMContentLoaded', function() {
+        const statsSection = document.querySelector('.stats-section');
+        if (statsSection) {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        animateStats();
+                        observer.unobserve(entry.target);
+                    }
+                });
+            });
+            observer.observe(statsSection);
+        }
+    });
+</script>
+{% endblock %}

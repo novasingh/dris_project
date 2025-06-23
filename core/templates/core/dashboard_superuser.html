@@ -1,0 +1,17 @@
+<!-- Superuser Dashboard Template -->
+<!-- Name: AKASHDEEP SINGH | Student ID: 24072095 -->
+{% extends 'core/base.html' %}
+{% block title %}Superuser Dashboard | DRIS{% endblock %}
+{% block content %}
+<h2>Welcome, {{ user.get_full_name|default:user.username }} (Superuser)</h2>
+<ul class="list-group mb-4">
+    <li class="list-group-item"><a href="{% url 'admin:index' %}">Django Admin Interface</a></li>
+    <li class="list-group-item"><a href="{% url 'admin_dashboard' %}">Administrative Dashboard</a></li>
+    <li class="list-group-item"><a href="{% url 'disaster_report_list' %}">All Disaster Reports</a></li>
+    <li class="list-group-item"><a href="{% url 'volunteer_list' %}">All Volunteers</a></li>
+    <li class="list-group-item"><a href="{% url 'assign_volunteer' %}">Assign Volunteers</a></li>
+    <li class="list-group-item"><a href="{% url 'shelter_directory' %}">Manage Shelters</a></li>
+    <li class="list-group-item"><a href="/accounts/profile/">User & Role Management</a></li>
+    <li class="list-group-item"><a href="/admin/logs/">System Logs</a></li>
+</ul>
+{% endblock %}

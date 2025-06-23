@@ -1,0 +1,85 @@
+<!-- 
+    Disaster Reports List Template
+    Name: AKASHDEEP SINGH
+    Student ID: 24072095 -->
+
+{% extends 'core/base.html' %}
+{% block title %}Disaster Reports | DRIS{% endblock %}
+{% block content %}
+<h2 class="mb-4">Disaster Reports</h2>
+<form method="get" class="row g-3 mb-4">
+    <div class="col-md-3">
+        <select name="disaster_type" class="form-select">
+            <option value="">All Types</option>
+            <option value="flood">Flood</option>
+            <option value="landslide">Landslide</option>
+            <option value="haze">Haze</option>
+        </select>
+    </div>
+    <div class="col-md-3">
+        <input type="text" name="severity" class="form-control" placeholder="Severity">
+    </div>
+    <div class="col-md-3">
+        <input type="date" name="date" class="form-control" placeholder="Date">
+    </div>
+    <div class="col-md-3">
+        <button type="submit" class="btn btn-primary w-100">Filter</button>
+    </div>
+</form>
+<table class="table table-bordered table-hover">
+    <thead class="table-light">
+        <tr>
+            <th>Type</th>
+            <th>Severity</th>
+            <th>Location (Lat, Long)</th>
+            <th>Reported By</th>
+            <th>Date/Time</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for report in reports %}
+        <tr>
+            <td>{{ report.get_disaster_type_display }}</td>
+            <td>{{ report.severity }}</td>
+            <td>{{ report.gps_lat }}, {{ report.gps_long }}</td>
+            <td>{{ report.user.full_name }}</td>
+            <td>{{ report.timestamp }}</td>
+            <td>{{ report.description }}</td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="6" class="text-center">No reports found.</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
+{% block extra_js %}
+<script>
+function updateReportTable() {
+    fetch('/disasters/json/')
+        .then(response => response.json())
+        .then(data => {
+            const tbody = document.querySelector('table tbody');
+            tbody.innerHTML = '';
+            if (data.reports.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6" class="text-center">No reports found.</td></tr>';
+            } else {
+                data.reports.forEach(report => {
+                    tbody.innerHTML += `
+                        <tr>
+                            <td>${report.type}</td>
+                            <td>${report.severity}</td>
+                            <td>${report.gps_lat}, ${report.gps_long}</td>
+                            <td>${report.user}</td>
+                            <td>${report.timestamp}</td>
+                            <td>${report.description}</td>
+                        </tr>
+                    `;
+                });
+            }
+        });
+}
+setInterval(updateReportTable, 10000);
+document.addEventListener('DOMContentLoaded', updateReportTable);
+</script>
+{% endblock %}

@@ -1,0 +1,36 @@
+<!-- 
+    Aid Request Form Template
+    Name: AKASHDEEP SINGH
+    Student ID: 24072095 -->
+
+{% extends 'core/base.html' %}
+{% block title %}Request Aid | DRIS{% endblock %}
+{% block content %}
+<h2 class="mb-4">Request Aid</h2>
+<form method="post" class="row g-3">
+    {% csrf_token %}
+    <div class="col-md-6">
+        <label for="aid_type" class="form-label">Type of Aid</label>
+        <select name="aid_type" id="aid_type" class="form-select" required>
+            <option value="food">Food</option>
+            <option value="shelter">Shelter</option>
+            <option value="rescue">Rescue</option>
+        </select>
+    </div>
+    <div class="col-md-6">
+        <label for="disaster_report" class="form-label">Related Disaster Report</label>
+        <select name="disaster_report" id="disaster_report" class="form-select" required>
+            {% for report in disaster_reports %}
+            <option value="{{ report.id }}">{{ report.get_disaster_type_display }} ({{ report.timestamp }})</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="col-12">
+        <label for="details" class="form-label">Details</label>
+        <textarea name="details" id="details" class="form-control" rows="3" required></textarea>
+    </div>
+    <div class="col-12">
+        <button type="submit" class="btn btn-success">Submit Request</button>
+    </div>
+</form>
+{% endblock %}

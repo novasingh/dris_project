@@ -1,0 +1,34 @@
+<!-- 
+    Assign Volunteer Template
+    Name: AKASHDEEP SINGH
+    Student ID: 24072095 -->
+
+{% extends 'core/base.html' %}
+{% block title %}Assign Volunteer | DRIS{% endblock %}
+{% block content %}
+<h2 class="mb-4">Assign Volunteer to Aid Request</h2>
+<form method="post" class="row g-3 mb-4">
+    {% csrf_token %}
+    <div class="col-md-6">
+        <label for="aid_request" class="form-label">Aid Request</label>
+        <select name="aid_request" id="aid_request" class="form-select" required>
+            <option value="">Select Aid Request</option>
+            {% for req in aid_requests %}
+            <option value="{{ req.id }}">{{ req.aid_type }} ({{ req.details|truncatechars:30 }})</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="col-md-6">
+        <label for="volunteer" class="form-label">Volunteer</label>
+        <select name="volunteer" id="volunteer" class="form-select" required>
+            <option value="">Select Volunteer</option>
+            {% for v in volunteers %}
+            <option value="{{ v.id }}">{{ v.full_name }} ({{ v.skills }})</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="col-12">
+        <button type="submit" class="btn btn-primary">Assign</button>
+    </div>
+</form>
+{% endblock %}

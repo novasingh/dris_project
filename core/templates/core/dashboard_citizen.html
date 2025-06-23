@@ -1,0 +1,13 @@
+<!-- Citizen Dashboard Template -->
+<!-- Name: AKASHDEEP SINGH | Student ID: 24072095 -->
+{% extends 'core/base.html' %}
+{% block title %}Citizen Dashboard | DRIS{% endblock %}
+{% block content %}
+<h2>Welcome, {{ user.get_full_name|default:user.username }} (Citizen)</h2>
+<ul class="list-group mb-4">
+    <li class="list-group-item"><a href="{% url 'disaster_report_list' %}">View Disaster Reports</a></li>
+    <li class="list-group-item"><a href="{% url 'aid_request_create' %}">Submit Aid Request</a></li>
+    <li class="list-group-item"><a href="{% url 'shelter_directory' %}">Shelter Directory</a></li>
+    <li class="list-group-item"><a href="/accounts/profile/">Manage Profile</a></li>
+</ul>
+{% endblock %}

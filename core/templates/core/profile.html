@@ -1,0 +1,24 @@
+<!-- 
+    Login Page Template
+    Name: AKASHDEEP SINGH
+    Student ID: 24072095 -->
+{% extends 'core/base.html' %}
+{% block title %}Profile | DRIS{% endblock %}
+{% block content %}
+<div class="container py-4">
+    <h2 class="mb-4">My Profile</h2>
+    <div class="card mb-4">
+        <div class="card-body">
+            <h5 class="card-title">{{ user.get_full_name|default:user.username }}</h5>
+            <p class="card-text mb-1"><strong>Username:</strong> {{ user.username }}</p>
+            <p class="card-text mb-1"><strong>Email:</strong> {{ user.email }}</p>
+            <p class="card-text mb-1"><strong>Role:</strong> {{ user.role|title }}</p>
+            {% if user.role == 'volunteer' %}
+                <p class="card-text mb-1"><strong>Skills:</strong> {{ user.skills }}</p>
+                <p class="card-text mb-1"><strong>Availability:</strong> {{ user.availability }}</p>
+            {% endif %}
+        </div>
+    </div>
+    <a href="/accounts/password_change/" class="btn btn-outline-primary">Change Password</a>
+</div>
+{% endblock %}

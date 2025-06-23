@@ -1,0 +1,85 @@
+{% load static %}
+<!-- 
+    Base template for DRIS web application
+    Name: AKASHDEEP SINGH
+    Student ID: 24072095 -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}DRIS - Disaster Response Information System{% endblock %}</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    {% block extra_head %}{% endblock %}
+</head>
+<body>
+    <!-- Emergency Hotline Bar -->
+    <div class="emergency-bar text-center position-sticky top-0 w-100" style="z-index: 1050; background-color: #dc3545; color: white; padding: 10px 0; font-weight: bold;">
+        <i class="fas fa-phone-alt"></i> EMERGENCY HOTLINE: 999 | Available 24/7
+    </div>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center" href="/">
+                <img src="{% static 'logo.png' %}" alt="NADMA Logo" height="75" class="me-2">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">Home</a>
+                    </li>
+                    {% if user.is_authenticated %}
+                        {% if user.is_superuser %}
+                            <li class="nav-item"><a class="nav-link" href="{% url 'admin_dashboard' %}">Dashboard</a></li>
+                            <li class="nav-item"><a class="nav-link" href="{% url 'admin:index' %}">Django Admin</a></li>
+                        {% elif user.role == 'authority' %}
+                            <li class="nav-item"><a class="nav-link" href="{% url 'dashboard_router' %}">Dashboard</a></li>
+                            <li class="nav-item"><a class="nav-link" href="{% url 'admin_dashboard' %}">Admin Dashboard</a></li>
+                            <li class="nav-item"><a class="nav-link" href="{% url 'add_shelter' %}">Add Shelter</a></li>
+                        {% elif user.role == 'volunteer' %}
+                            <li class="nav-item"><a class="nav-link" href="{% url 'dashboard_router' %}">Dashboard</a></li>
+                        {% elif user.role == 'citizen' %}
+                            <li class="nav-item"><a class="nav-link" href="{% url 'dashboard_router' %}">Dashboard</a></li>
+                        {% endif %}
+                        <li class="nav-item ms-2">
+                            <span class="nav-link">Welcome, {{ user.get_full_name|default:user.username }}</span>
+                        </li>
+                        <li class="nav-item ms-2">
+                            <a class="btn btn-outline-danger btn-sm" href="{% url 'logout' %}">Logout</a>
+                        </li>
+                    {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="#services">Services</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#about">About</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#contact">Contact</a>
+                        </li>
+                        <li class="nav-item ms-2">
+                            <a class="btn btn-primary" href="{% url 'login' %}">Login</a>
+                        </li>
+                        <li class="nav-item ms-2">
+                            <a class="btn btn-outline-primary" href="{% url 'register' %}">Register</a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <main class="container mb-5 py-3">
+        {% block content %}{% endblock %}
+    </main>
+    <footer class="bg-dark text-white text-center py-3 mt-auto">
+        © 2025 NADMA, Akashdeep Singh, 24072095.
+    </footer>
+    {% block extra_js %}{% endblock %}
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

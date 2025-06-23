@@ -1,0 +1,61 @@
+{% extends 'core/base.html' %}
+{% block title %}Add Shelter | DRIS{% endblock %}
+{% block content %}
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <h2 class="mb-4">Add New Shelter</h2>
+            <form method="post" class="card shadow-sm">
+                <div class="card-body">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="id_name" class="form-label">Shelter Name</label>
+                        {{ form.name }}
+                        {% if form.name.errors %}
+                            <div class="invalid-feedback d-block">{{ form.name.errors.0 }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="mb-3">
+                        <label for="id_location" class="form-label">Location</label>
+                        {{ form.location }}
+                        {% if form.location.errors %}
+                            <div class="invalid-feedback d-block">{{ form.location.errors.0 }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="id_capacity" class="form-label">Total Capacity</label>
+                                {{ form.capacity }}
+                                {% if form.capacity.errors %}
+                                    <div class="invalid-feedback d-block">{{ form.capacity.errors.0 }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="id_available_capacity" class="form-label">Available Capacity</label>
+                                {{ form.available_capacity }}
+                                {% if form.available_capacity.errors %}
+                                    <div class="invalid-feedback d-block">{{ form.available_capacity.errors.0 }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="id_description" class="form-label">Description</label>
+                        {{ form.description }}
+                        {% if form.description.errors %}
+                            <div class="invalid-feedback d-block">{{ form.description.errors.0 }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary">Add Shelter</button>
+                        <a href="{% url 'shelter_directory' %}" class="btn btn-outline-secondary">Back to Shelter List</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

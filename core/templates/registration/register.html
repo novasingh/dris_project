@@ -1,0 +1,54 @@
+<!-- 
+    Registration Page Template
+    Name: AKASHDEEP SINGH
+    Student ID: 24072095 -->
+
+{% extends 'core/base.html' %}
+{% block title %}Register | DRIS{% endblock %}
+{% block content %}
+<div class="row justify-content-center py-5">
+    <div class="col-md-8">
+        <h2 class="mb-4">Register</h2>
+        <form method="post" novalidate class="needs-validation">
+            {% csrf_token %}
+            {{ form.non_field_errors }}
+            <div class="mb-3">
+                <label for="id_username" class="form-label">Username</label>
+                {{ form.username }}
+                {% if form.username.errors %}
+                    <div class="invalid-feedback d-block">{{ form.username.errors.0 }}</div>
+                {% endif %}
+            </div>
+            <div class="mb-3">
+                <label for="id_full_name" class="form-label">Full Name</label>
+                {{ form.full_name }}
+                {% if form.full_name.errors %}
+                    <div class="invalid-feedback d-block">{{ form.full_name.errors.0 }}</div>
+                {% endif %}
+            </div>
+            <div class="mb-3">
+                <label for="id_email" class="form-label">Email</label>
+                {{ form.email }}
+                {% if form.email.errors %}
+                    <div class="invalid-feedback d-block">{{ form.email.errors.0 }}</div>
+                {% endif %}
+            </div>
+            <div class="mb-3">
+                <label for="id_role" class="form-label">Role</label>
+                {{ form.role }}
+                {% if form.role.errors %}
+                    <div class="invalid-feedback d-block">{{ form.role.errors.0 }}</div>
+                {% endif %}
+            </div>
+            <div class="mb-3">
+                <label for="id_password" class="form-label">Password</label>
+                {{ form.password }}
+                {% if form.password.errors %}
+                    <div class="invalid-feedback d-block">{{ form.password.errors.0 }}</div>
+                {% endif %}
+            </div>
+            <button type="submit" class="btn btn-success w-100">Register</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

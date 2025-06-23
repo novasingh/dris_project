@@ -1,0 +1,24 @@
+<!-- 
+    Volunteer Registration Template
+    Name: AKASHDEEP SINGH
+    Student ID: 24072095 -->
+
+{% extends 'core/base.html' %}
+{% block title %}Volunteer Registration | DRIS{% endblock %}
+{% block content %}
+<h2 class="mb-4">Volunteer Registration</h2>
+<form method="post" class="row g-3">
+    {% csrf_token %}
+    <div class="col-md-6">
+        <label for="skills" class="form-label">Skills</label>
+        <input type="text" name="skills" id="skills" class="form-control" placeholder="e.g. First Aid, Search & Rescue" required>
+    </div>
+    <div class="col-md-6">
+        <label for="availability" class="form-label">Availability</label>
+        <input type="text" name="availability" id="availability" class="form-control" placeholder="e.g. Weekends, Evenings" required>
+    </div>
+    <div class="col-12">
+        <button type="submit" class="btn btn-primary">Register as Volunteer</button>
+    </div>
+</form>
+{% endblock %}

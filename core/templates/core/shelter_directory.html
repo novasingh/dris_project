@@ -1,0 +1,131 @@
+<!-- 
+    Shelter Directory Template
+    Name: AKASHDEEP SINGH
+    Student ID: 24072095 -->
+
+{% extends 'core/base.html' %}
+{% load static %}
+{% block title %}Shelter Directory | DRIS{% endblock %}
+{% block content %}
+<div class="container py-4">
+    <div class="row">
+        <!-- Filter Sidebar -->
+        <div class="col-md-3">
+            <div class="card shadow-sm mb-4">
+                <div class="card-body">
+                    <h5 class="card-title mb-3">Filter Shelters</h5>
+                    <form method="get">
+                        <div class="mb-3">
+                            <label for="id_location" class="form-label">Location Search</label>
+                            {{ form.location }}
+                        </div>
+                        <div class="mb-3">
+                            <label for="id_availability" class="form-label">Availability</label>
+                            {{ form.availability }}
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Capacity Range</label>
+                            <div class="d-flex gap-2">
+                                {{ form.capacity_min }}
+                                {{ form.capacity_max }}
+                            </div>
+                        </div>
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary">Apply Filters</button>
+                            <a href="{% url 'shelter_directory' %}" class="btn btn-outline-secondary mt-2">Clear Filters</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Shelter List -->
+        <div class="col-md-9">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2 class="mb-0">Emergency Shelters</h2>
+                {% if user.is_superuser or user.role == 'authority' %}
+                <a href="{% url 'add_shelter' %}" class="btn btn-success">
+                    <i class="fas fa-plus"></i> Add New Shelter
+                </a>
+                {% endif %}
+            </div>
+
+            {% if shelters %}
+                <div class="row g-4">
+                    {% for shelter in shelters %}
+                        <div class="col-md-6">
+                            <div class="card h-100 shelter-card">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ shelter.name }}</h5>
+                                    <p class="card-text"><i class="fas fa-map-marker-alt text-danger"></i> {{ shelter.location }}</p>
+                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                        <div>
+                                            <p class="mb-0"><strong>Capacity:</strong> {{ shelter.available_capacity }}/{{ shelter.capacity }}</p>
+                                        </div>
+                                        {% if shelter.available_capacity > 0 %}
+                                            {% if shelter.capacity > 0 and shelter.available_capacity <= shelter.capacity|divisibleby:5 %}
+                                                <span class="badge bg-warning">Limited Space</span>
+                                            {% else %}
+                                                <span class="badge bg-success">Available</span>
+                                            {% endif %}
+                                        {% else %}
+                                            <span class="badge bg-danger">Full</span>
+                                        {% endif %}
+                                    </div>
+                                    {% if shelter.description %}
+                                        <p class="card-text">{{ shelter.description }}</p>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="alert alert-info">
+                    No shelters found matching your criteria.
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<style>
+.shelter-card {
+    transition: transform 0.2s;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+.shelter-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+</style>
+{% endblock %}
+{% block extra_js %}
+<script>
+function updateShelterTable() {
+    fetch('/shelters/json/')
+        .then(response => response.json())
+        .then(data => {
+            const tbody = document.querySelector('table tbody');
+            tbody.innerHTML = '';
+            if (data.shelters.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" class="text-center">No shelters found.</td></tr>';
+            } else {
+                data.shelters.forEach(shelter => {
+                    tbody.innerHTML += `
+                        <tr>
+                            <td>${shelter.name}</td>
+                            <td>${shelter.location}</td>
+                            <td>${shelter.capacity}</td>
+                            <td>${shelter.available_capacity}</td>
+                            <td>${shelter.description}</td>
+                        </tr>
+                    `;
+                });
+            }
+        });
+}
+setInterval(updateShelterTable, 10000);
+document.addEventListener('DOMContentLoaded', updateShelterTable);
+</script>
+{% endblock %}

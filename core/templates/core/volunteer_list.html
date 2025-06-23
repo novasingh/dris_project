@@ -1,0 +1,32 @@
+<!-- 
+    Volunteer List Template
+    Name: AKASHDEEP SINGH
+    Student ID: 24072095 -->
+
+{% extends 'core/base.html' %}
+{% block title %}Volunteers | DRIS{% endblock %}
+{% block content %}
+<h2 class="mb-4">Volunteers</h2>
+<table class="table table-bordered table-hover">
+    <thead class="table-light">
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Skills</th>
+            <th>Availability</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for volunteer in volunteers %}
+        <tr>
+            <td>{{ volunteer.full_name }}</td>
+            <td>{{ volunteer.email }}</td>
+            <td>{{ volunteer.skills }}</td>
+            <td>{{ volunteer.availability }}</td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="4" class="text-center">No volunteers found.</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
