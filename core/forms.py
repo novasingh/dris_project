@@ -24,12 +24,22 @@ class DisasterReportFilterForm(forms.Form):
     date = forms.DateField(required=False, widget=forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}))
 
 class UserRegistrationForm(forms.ModelForm):
-    password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control'}), label='Password')
+    password = forms.CharField(
+        widget=forms.PasswordInput(attrs={'class': 'form-control'}),
+        label='Password',
+        min_length=8,
+        help_text='Password must be at least 8 characters long.'
+    )
     role = forms.ChoiceField(
         choices=[('citizen', 'Citizen'), ('volunteer', 'Volunteer')],
         widget=forms.Select(attrs={'class': 'form-select'}),
         label='Role'
     )
+    def clean_password(self):
+        password = self.cleaned_data.get('password')
+        if password and len(password) < 8:
+            raise forms.ValidationError('Password must be at least 8 characters long.')
+        return password
     class Meta:
         model = User
         fields = ['username', 'full_name', 'email', 'role', 'password']

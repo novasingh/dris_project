@@ -17,6 +17,9 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from core.admin import admin_site
+from django.conf.urls import handler403
+
+handler403 = 'core.views.permission_denied_view'
 
 urlpatterns = [
     path('admin/', admin_site.urls),

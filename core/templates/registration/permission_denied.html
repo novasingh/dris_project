@@ -1,0 +1,12 @@
+{% extends 'core/base.html' %}
+{% block title %}Permission Denied | DRIS{% endblock %}
+{% block content %}
+<div class="container py-5">
+    <div class="alert alert-warning text-center">
+        <h4 class="mb-3">You are authenticated as {{ user.username }}, but are not authorized to access this page.</h4>
+        <p>Would you like to login to a different account?</p>
+        <a href="/admin/login/?next={{ request.path }}" class="btn btn-outline-primary">Manage via Django Admin</a>
+        <a href="{% url 'logout' %}?next={% url 'login' %}" class="btn btn-secondary ms-2">Logout & Login as Different User</a>
+    </div>
+</div>
+{% endblock %}

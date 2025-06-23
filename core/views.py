@@ -341,3 +341,6 @@ def my_aid_requests(request):
     page_number = request.GET.get('page')
     aid_requests_page = paginator.get_page(page_number)
     return render(request, 'core/my_aid_requests.html', {'aid_requests': aid_requests_page})
+
+def permission_denied_view(request, exception=None):
+    return render(request, 'registration/permission_denied.html', status=403)

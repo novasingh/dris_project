@@ -5,6 +5,9 @@ from django.urls import path
 from django.template.response import TemplateResponse
 from .models import User, DisasterReport, AidRequest, Shelter, VolunteerAssignment
 from .models_contact import ContactMessage
+from django import forms
+from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
+from django.core.exceptions import ValidationError
 
 class CustomAdminSite(admin.AdminSite):
     site_header = 'DRIS Admin'
@@ -35,3 +38,21 @@ admin_site.register(AidRequest)
 admin_site.register(Shelter)
 admin_site.register(VolunteerAssignment)
 admin_site.register(ContactMessage)
+
+class UserAdminForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = '__all__'
+
+    def clean_password(self):
+        password = self.cleaned_data.get('password')
+        if password and len(password) < 8:
+            raise ValidationError('Password must be at least 8 characters long.')
+        return password
+
+class UserAdmin(BaseUserAdmin):
+    form = UserAdminForm
+    add_form = UserAdminForm
+
+admin_site.unregister(User)
+admin_site.register(User, UserAdmin)

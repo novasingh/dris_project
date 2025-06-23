@@ -1,63 +1,135 @@
-<!-- Authority Dashboard Template -->
-<!-- Name: AKASHDEEP SINGH | Student ID: 24072095 -->
+<!-- 
+    Administrative Dashboard Template
+    Name: AKASHDEEP SINGH
+    Student ID: 24072095 -->
+
 {% extends 'core/base.html' %}
-{% block title %}Authority Dashboard | DRIS{% endblock %}
+{% block title %}Admin Dashboard | DRIS{% endblock %}
 {% block content %}
-<h2>Welcome, {{ user.get_full_name|default:user.username }} (Authority)</h2>
+<h2 class="mb-4">Administrative Dashboard</h2>
 <div class="row g-4 mb-4">
-    <div class="col-md-4">
-        <div class="card shadow-sm h-100">
-            <div class="card-body d-flex flex-column justify-content-between">
-                <h5 class="card-title">Administrative Dashboard</h5>
-                <p class="card-text">View statistics and manage all administrative tasks.</p>
-                <a href="{% url 'admin_dashboard' %}" class="btn btn-outline-primary mt-auto">Go to Admin Dashboard</a>
+    <div class="col-md-2 col-6">
+        <div class="card text-bg-primary text-center shadow h-100">
+            <div class="card-body">
+                <div class="display-5 mb-2"><i class="fas fa-users"></i></div>
+                <h6 class="card-title">Total Users</h6>
+                <div class="display-6 fw-bold">{{ user_count }}</div>
             </div>
         </div>
     </div>
-    <div class="col-md-4">
-        <div class="card shadow-sm h-100">
-            <div class="card-body d-flex flex-column justify-content-between">
-                <h5 class="card-title">Disaster Reports</h5>
-                <p class="card-text">View and manage all disaster reports.</p>
-                <a href="{% url 'disaster_report_list' %}" class="btn btn-outline-danger mt-auto">Manage Reports</a>
+    <div class="col-md-2 col-6">
+        <div class="card text-bg-success text-center shadow h-100">
+            <div class="card-body">
+                <div class="display-5 mb-2"><i class="fas fa-hands-helping"></i></div>
+                <h6 class="card-title">Volunteers</h6>
+                <div class="display-6 fw-bold">{{ volunteer_count }}</div>
             </div>
         </div>
     </div>
-    <div class="col-md-4">
-        <div class="card shadow-sm h-100">
-            <div class="card-body d-flex flex-column justify-content-between">
-                <h5 class="card-title">Volunteers</h5>
-                <p class="card-text">View and manage volunteers.</p>
-                <a href="{% url 'volunteer_list' %}" class="btn btn-outline-success mt-auto">View Volunteers</a>
+    <div class="col-md-2 col-6">
+        <div class="card text-bg-warning text-center shadow h-100">
+            <div class="card-body">
+                <div class="display-5 mb-2"><i class="fas fa-home"></i></div>
+                <h6 class="card-title">Active Shelters</h6>
+                <div class="display-6 fw-bold">{{ active_shelter_count }}</div>
             </div>
         </div>
     </div>
-    <div class="col-md-4">
-        <div class="card shadow-sm h-100">
-            <div class="card-body d-flex flex-column justify-content-between">
-                <h5 class="card-title">Assign Volunteers</h5>
-                <p class="card-text">Assign volunteers to aid requests.</p>
-                <a href="{% url 'assign_volunteer' %}" class="btn btn-outline-warning mt-auto">Assign Volunteers</a>
+    <div class="col-md-2 col-6">
+        <div class="card text-bg-info text-center shadow h-100">
+            <div class="card-body">
+                <div class="display-5 mb-2"><i class="fas fa-clipboard-list"></i></div>
+                <h6 class="card-title">Aid Requests</h6>
+                <div class="display-6 fw-bold">{{ request_count }}</div>
             </div>
         </div>
     </div>
-    <div class="col-md-4">
-        <div class="card shadow-sm h-100">
-            <div class="card-body d-flex flex-column justify-content-between">
-                <h5 class="card-title">Shelter Directory</h5>
-                <p class="card-text">View and manage all shelters.</p>
-                <a href="{% url 'shelter_directory' %}" class="btn btn-outline-info mt-auto">Manage Shelters</a>
+    <div class="col-md-2 col-6">
+        <div class="card text-bg-danger text-center shadow h-100">
+            <div class="card-body">
+                <div class="display-5 mb-2"><i class="fas fa-exclamation-triangle"></i></div>
+                <h6 class="card-title">Disaster Reports</h6>
+                <div class="display-6 fw-bold">{{ report_count }}</div>
             </div>
         </div>
     </div>
-    <div class="col-md-4">
-        <div class="card shadow-sm h-100">
-            <div class="card-body d-flex flex-column justify-content-between">
-                <h5 class="card-title">User Management</h5>
-                <p class="card-text">Manage user accounts and profiles.</p>
-                <a href="/accounts/profile/" class="btn btn-outline-secondary mt-auto">User Management</a>
+    <div class="col-md-2 col-6">
+        <div class="card text-bg-secondary text-center shadow h-100">
+            <div class="card-body">
+                <div class="display-5 mb-2"><i class="fas fa-tasks"></i></div>
+                <h6 class="card-title">Assignments</h6>
+                <div class="display-6 fw-bold">{{ assignment_count }}</div>
             </div>
         </div>
     </div>
 </div>
+
+<div class="row g-4">
+    <div class="col-md-4">
+        <div class="card shadow-sm h-100">
+            <div class="card-body">
+                <h5 class="card-title">Manage Users</h5>
+                <p class="card-text">View, add, or edit users and their roles.</p>
+                <a href="/admin/core/user/" class="btn btn-primary w-100 mb-2">Manage Users</a>
+                <a href="{% url 'user_list' %}" class="btn btn-outline-primary w-100">View Users</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card shadow-sm h-100">
+            <div class="card-body">
+                <h5 class="card-title">Manage Volunteers</h5>
+                <p class="card-text">View and manage all registered volunteers.</p>
+                <a href="/volunteers/" class="btn btn-success w-100 mb-2">View Volunteers</a>
+                <a href="{% url 'volunteer_list' %}" class="btn btn-outline-success w-100">Volunteer Directory</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card shadow-sm h-100">
+            <div class="card-body">
+                <h5 class="card-title">Manage Shelters</h5>
+                <p class="card-text">Add, edit, or remove emergency shelters.</p>
+                <a href="{% url 'add_shelter' %}" class="btn btn-warning w-100 mb-2">Manage Shelters</a>
+                <a href="{% url 'shelter_directory' %}" class="btn btn-outline-warning w-100">View Shelters</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card shadow-sm h-100">
+            <div class="card-body">
+                <h5 class="card-title">Aid Requests</h5>
+                <p class="card-text">Review and respond to aid requests from citizens.</p>
+                <a href="/admin/core/aidrequest/" class="btn btn-info w-100 mb-2">Manage Aid Requests</a>
+                <a href="{% url 'aid_request_list' %}" class="btn btn-outline-info w-100">View Aid Requests</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card shadow-sm h-100">
+            <div class="card-body">
+                <h5 class="card-title">Disaster Reports</h5>
+                <p class="card-text">View and manage all disaster reports.</p>
+                <a href="/admin/core/disasterreport/" class="btn btn-danger w-100 mb-2">Manage Reports</a>
+                <a href="{% url 'disaster_report_list' %}" class="btn btn-outline-danger w-100">View Reports</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card shadow-sm h-100">
+            <div class="card-body">
+                <h5 class="card-title">Assignments</h5>
+                <p class="card-text">Assign volunteers to aid requests and track.</p>
+                 <a href="/admin/core/volunteerassignment" class="btn btn-secondary w-100 mb-2">Manage Volunteer</a>
+                <a href="/assign-volunteer/" class="btn btn-outline-secondary w-100 mb-2">Assign Volunteer</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.card .display-5 {
+    font-size: 2.5rem;
+}
+</style>
 {% endblock %}
